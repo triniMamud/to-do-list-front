@@ -1,16 +1,17 @@
+import ToDoList from './ToDoList';
+
 const { axios } = require('axios');
 const { Button, Table } = require('react-bootstrap');
 const { React, useState } = require('react');
-const { useHistory } = require("react-router");
 const { Redirect } = require("react-router-dom");
 
-const ToDoList = () => {
 
-    const [items, setItem] = useState([]);
-    const history = useHistory();
+const Folders = () => {
+
+    const [folders, setFolders] = useState([]);
 
     const componentDidMount = () => {
-        axios.get('http://localhost:8080/item/list')
+        axios.get('http://localhost:8080/folder/list')
         .then(res => {
             this.setItem(res.data);
         })
@@ -20,18 +21,17 @@ const ToDoList = () => {
         }) 
     }
 
-    const addTask = (event) => {
-
-        const value = document.getElementById("itemValue").value;
-        const item = {
+    const addFolder = (event) => {
+        const value = document.getElementById("folderName").value;
+        const folder = {
             value
         };
 
         const options = {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            data: item,
-            url: 'http://localhost:8080/item/new'
+            data: folder,
+            url: 'http://localhost:8080/folder/new'
         };
         axios(options)
             .then((response) => {})
@@ -46,17 +46,12 @@ const ToDoList = () => {
         event.preventDefault();
     }
 
-    const editItem = (value) => {
-        history.push("/update");
-        this.setState({item: value});
-    }
-
-    const deleteItem = (value) => {
+    const deleteFolder = (name) => {
         const options = {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },
-            data: value,
-            url: 'http://localhost:8080/item/delete'
+            data: name,
+            url: 'http://localhost:8080/folder/delete'
         };
         axios(options)
             .then((response) => {})
@@ -70,32 +65,33 @@ const ToDoList = () => {
 
     return (
         <div>
-            <Redirect to="/folder">Folders</Redirect>
-            <h2>To-Do List</h2>
+            <div className="p-3 mr-5 ml-5 container">
+            </div>
+            <h2>Folders</h2>
             <Table class='table borderless'>
                 <tbody>
-                    {items.map(item =>
+                    {folders.map(folder =>
                         <tr>
                             <td>
-                                <input type= "checkbox"> {item.value} </input>
+                                <input type= "checkbox"> {folder.name} </input>
                             </td>
                             <td>
-                                <Button onClick={()=>editItem(item.value)}>Edit</Button>
+                                <Button onClick={()=> <ToDoList/> }>View items</Button>
                             </td>
                             <td>
-                                <Button color="danger" onClick={()=>deleteItem(item.value)}>Delete</Button>
+                                <Button color="danger" onClick={()=>deleteFolder(folder.name)}>Remove</Button>
                             </td>
                         </tr>
                     )}
                 </tbody>
-                </Table>
+            </Table>
             <div className="p-3 mr-5 ml-5 container">
-                <input id="itemValue" type="text" placeholder="New task"/>
-                <Button className="mt-5 mb-5 mr-2 ml-2" size="sm" variant="info" type="submit" onClick={addTask}>Add</Button>
+                <input id="folderName" type="text" placeholder="New folder"/>
+                <Button className="mt-5 mb-5 mr-2 ml-2" size="sm" variant="info" type="submit" onClick={addFolder}>Add</Button>
             </div>
         </div>
     )
 
 }
 
-export default ToDoList;
+export default Folders;
