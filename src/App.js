@@ -10,9 +10,9 @@ function App() {
     return (
         <BrowserRouter>
           <Redirect to="/item" />
-          <Route exact path='/item' component={(props)=><ToDoList {...props} state={props}/>}/>
-          <Route exact path='/item/update' component={()=><EditItem/>}/>
-          <Route exact path='/folder' component={()=><Folders/>}/>
+          <Route exact path='/item' render={(props)=><ToDoList {...props} state={props}/>}/>
+          <Route exact path='/item/update' render={()=><EditItem/>}/>
+          <Route exact path='/folder' render={()=><Folders/>}/>
         </BrowserRouter>   
     );
 }
