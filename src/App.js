@@ -1,25 +1,18 @@
-import logo from './logo.svg';
+import ToDoList from './components/ToDoList';
+import EditItem from './components/EditItem';
 import './App.css';
 
+const { React} = require("react");
+const { BrowserRouter, Route, Redirect } = require("react-router-dom");
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+          <Redirect to="/item" />
+          <Route exact path='/item' component={(props)=><ToDoList {...props} state={props}/>}/>
+          <Route exact path='/item/update' component={()=><EditItem/>}/>
+        </BrowserRouter>   
+    );
 }
 
 export default App;
